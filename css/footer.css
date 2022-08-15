@@ -9,12 +9,15 @@ footer {
     align-items: center;
 }
 
-footer > button {
+footer > a {
     width: 364px;
     height: 61px;
     border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     border: none;
-    text-align: center;
     text-size-adjust: 50px;
     background-color: var(--gray4);
     color: var(--white1);
@@ -22,4 +25,11 @@ footer > button {
     font-size: 20px;
     line-height: 23px;
     padding: 8px 87px;
+}
+
+.activeButton {
+    color: var(--white1);
+    font-weight: 700;
+    background-color: var(--green);
+
 }
