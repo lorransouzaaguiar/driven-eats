@@ -32,14 +32,14 @@ main section {
     padding-bottom: 15px;
 }
 
+
 .product {
     width: 172px;
     height: 216px;
     padding: 18px 14px 14px 14px;
     background-color: var(--white1);
     border-radius: 9px;
-    margin-right: 16px;
-    box-shadow: 0px 0px 10px -4px rgba(0, 0, 0, 0.25), inset 0px 0px 0px 5px #32B72F;   
+    margin-right: 16px;  
     border-radius: 9px;
 }
 
@@ -75,14 +75,19 @@ main section {
     display: flex;
     justify-content: space-between;
 }
-.content .footer > img{
-    display: none;
-}
 
 .content  .footer > span {
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
     color: var(--black);
+}
+
+.cardChecked {
+    box-shadow: 0px 0px 10px -4px rgba(0, 0, 0, 0.25), inset 0px 0px 0px 5px #32B72F; 
+}
+
+.iconChecked {
+    display: none;
 }
 
