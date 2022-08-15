@@ -41,6 +41,7 @@ main section {
     border-radius: 9px;
     margin-right: 16px;  
     border-radius: 9px;
+    cursor: pointer;
 }
 
 .product .content {
