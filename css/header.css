@@ -4,21 +4,28 @@
     background-color: var(--red1);
     padding-left: 21px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     position: fixed;
     top: 0;
 }
 
-.header-main > h1, h2 {
+.header-wrapper > h1, h2 {
     width: 218px;
     color: var(--white1);
 }
 
-.header-main > h1 {
+.header-wrapper > h1 {
+    font-family: 'Righteous', cursive;
     font-size: 44px;
+    font-weight: 400;
+    line-height: 55px;
 }
 
-.header-main > h2 {
+.header-wrapper > h2 {
     font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
 }
