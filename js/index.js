@@ -41,25 +41,51 @@ const activeCheckedCard = (cardList) => {
     }
 }
 
+const createCart = () => {
+    const itemList = []
+
+    const addItem = (item) => {
+        itemList.push(item)
+    }
+
+    const calSum = () => {
+        return itemList.reduce((sum, item) => sum + item.price, 0)
+    }
+
+    const renderPurchase = () => {
+        return `Olá, gostaria de fazer o pedido: \
+        \n - Prato: ${itemList[0].title} \
+        \n - Bebida: ${itemList[1].title} \
+        \n - Sobremesa: ${itemList[2].title} \
+        \n Total: R$ ${calSum().toFixed('2')}`
+    }
+
+    return Object.freeze({ addItem, renderPurchase })
+}
+
 const activePurchaseButton = () => {
     const activeCards = document.querySelectorAll('.cardChecked')
 
     if (activeCards.length === 3) {
         const button = document.querySelector('.button')
+        const cart = createCart()
+        for (let i = 0; i < activeCards.length; i++) {
+            const cardContent = activeCards[i].childNodes[3]
+            const titleElement = cardContent.childNodes[1]
+            const priceElement = cardContent.querySelector('.footer span')
+
+            const title = titleElement.textContent
+            const price = priceElement.textContent.replace('R$ ', '').replace(',', '.')
+            const product = { title, price: parseFloat(price) }
+            cart.addItem(product)
+        }
+        console.log(cart.renderPurchase())
         button.textContent = 'Fazer pedido'
         button.classList.add('activeButton')
-        const text = message()
+        const text = encodeURIComponent(cart.renderPurchase())
         button.setAttribute('href', `https://wa.me/5522997399034?text=${text}`)
     }
 
-}
-
-const message = () => {
-    return encodeURIComponent('Olá, gostaria de fazer o pedido: \
-        \n - Prato: Frango Yin Yang \
-        \n - Bebida: Coquinha Gelada \
-        \n - Sobremesa: Pudim \
-        \n Total: R$ 27.70')
 }
 
 (() => {
