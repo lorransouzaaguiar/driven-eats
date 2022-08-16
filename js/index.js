@@ -21,26 +21,6 @@ const disableOtherCards = (currentCardIndex, list) => {
     }
 }
 
-const activeCheckedCard = (cardList) => {
-    for (let index = 0; index < cardList.length; index++) {
-        const currentCard = cardList[index]
-        const footer = currentCard.querySelector('.product .footer')
-        const checkedIcon = createCheckedIcon()
-        const hasCheckedIcon = footer.childNodes.length === 2 ? true : false
-
-        currentCard.addEventListener('click', (e) => {
-            currentCard.classList.add('cardChecked')
-
-            if (!hasCheckedIcon) {
-                footer.appendChild(checkedIcon)
-            }
-
-            disableOtherCards(index, cardList)
-            activePurchaseButton()
-        })
-    }
-}
-
 const createCart = () => {
     const itemList = []
 
@@ -63,29 +43,64 @@ const createCart = () => {
     return Object.freeze({ addItem, renderPurchase })
 }
 
-const activePurchaseButton = () => {
-    const activeCards = document.querySelectorAll('.cardChecked')
+const getProductDataFromDOM = (activeCard) => {
+    const cardContent = activeCard.childNodes[3]
+    const titleElement = cardContent.childNodes[1]
+    const priceElement = cardContent.querySelector('.footer span')
 
-    if (activeCards.length === 3) {
-        const button = document.querySelector('.button')
-        const cart = createCart()
-        for (let i = 0; i < activeCards.length; i++) {
-            const cardContent = activeCards[i].childNodes[3]
-            const titleElement = cardContent.childNodes[1]
-            const priceElement = cardContent.querySelector('.footer span')
+    const title = titleElement.textContent
+    const price = priceElement.textContent.replace('R$ ', '').replace(',', '.')
+    return { title, price: parseFloat(price) }
+}
 
-            const title = titleElement.textContent
-            const price = priceElement.textContent.replace('R$ ', '').replace(',', '.')
-            const product = { title, price: parseFloat(price) }
-            cart.addItem(product)
+const makePurchaseButton = () => {
+
+    const active = () => {
+        const activeCards = document.querySelectorAll('.cardChecked')
+
+        if (activeCards.length === 3) {
+            const cart = createCart()
+
+            for (let i = 0; i < activeCards.length; i++) {
+                const product = getProductDataFromDOM(activeCards[i])
+                cart.addItem(product)
+            }
+
+            render(cart)
         }
-        console.log(cart.renderPurchase())
+
+    }
+
+    const render = (cart) => {
+        const button = document.querySelector('.button')
         button.textContent = 'Fazer pedido'
         button.classList.add('activeButton')
         const text = encodeURIComponent(cart.renderPurchase())
         button.setAttribute('href', `https://wa.me/5522997399034?text=${text}`)
     }
 
+    return { active }
+}
+
+const activeCheckedCard = (cardList) => {
+
+    for (let index = 0; index < cardList.length; index++) {
+        const currentCard = cardList[index]
+        const footer = currentCard.querySelector('.product .footer')
+        const checkedIcon = createCheckedIcon()
+        const hasCheckedIcon = footer.childNodes.length === 2 ? true : false
+
+        currentCard.addEventListener('click', (e) => {
+            currentCard.classList.add('cardChecked')
+
+            if (!hasCheckedIcon) {
+                footer.appendChild(checkedIcon)
+            }
+
+            disableOtherCards(index, cardList)
+            makePurchaseButton().active()
+        })
+    }
 }
 
 (() => {
@@ -96,8 +111,6 @@ const activePurchaseButton = () => {
     activeCheckedCard(dishList)
     activeCheckedCard(beverageList)
     activeCheckedCard(dessertList)
-
-    activePurchaseButton()
 
 })()
 
